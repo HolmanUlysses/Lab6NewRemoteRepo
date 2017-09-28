@@ -1,12 +1,14 @@
 <?php
-    $dsn = 'mysql:host=localhost;dbname=shopDB';
+    $dsn = 'localhost';
     $username = 'mgs_user';
     $password = 'pa55word';
+    $dbname = 'shopDB';
 
-    try {
-        $db = new PDO($dsn, $username, $password);
-    } catch (PDOException $e) {
-        $error_message = $e->getMessage();
+    $db = new mysqli($dsn, $username, $password, $dbname);
+    
+    if(mysqli_connect_error())
+    {
+        echo '<p>Error';
         include('database_error.php');
         exit();
     }

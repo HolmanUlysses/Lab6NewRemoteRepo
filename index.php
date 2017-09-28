@@ -1,10 +1,14 @@
 <?php
     require_once('database.php');
-    // Get customers
-    $query = "SELECT firstName, lastName FROM customers order by lastName;";
-    // result set
-    $customers = $db->query($query);
+      // Get orders
+    $customerID = 1;
 
+    $query = "SELECT orderID, orderDate FROM orders WHERE $customerID =1";
+    $stmt = $db ->prepare($query);
+    $stmt ->execute();
+    $stmt ->store_result();
+    
+    $stmt ->bind_result($orderID, $orderDate);
 ?>
 <!DOCTYPE html>
 <html>
@@ -20,35 +24,37 @@
     <div id="page">
 
     <div id="header">
-        <h1>customer Manager</h1>
+        <h1>Orders</h1>
     </div>
 
     <div id="main">
 
-        <h1>customer List</h1>
+        <h1>Order List</h1>
 
        <!-- this was the div ID sidebar, that we WILL need for Assignment 1, but not this lab -->
 
         <div id="content">
             <!-- display a table of customers -->
+              <!-- display a list of orders -->
             
             <table>
-                
-                 <tr>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                </tr>
-                
-                <?php foreach ($customers as $customer) : ?>
                 <tr>
-                    <td><?php echo $customer['firstName']; ?></td>
-                    <td><?php echo $customer['lastName']; ?></td>
-                    
-                    
+                    <th>Order ID</th>
+                    <th>Order Date</th>
                 </tr>
-                <?php endforeach; ?>  <!-- This foreach line iterated through an array -->
+                <?php while ($stmt ->fetch()) { ?>
+                <tr>
+                    <td><?php echo $orderID; ?></td>
+                    <td><?php echo $orderDate; ?></td>
+                </tr>
+                <!-- result set is available -->
+                
+                <?php }
+                
+    $stmt ->free_result();
+    $db ->close();?>
             </table>
-            <!--we deleted an old add customer line here -->
+            <br>
         </div>
     </div>
 
