@@ -1,10 +1,10 @@
 <?php
-    $dsn = 'localhost';
-    $username = 'mgs_user';
+    $servername = 'localhost';
+    $username = 'ts_user';
     $password = 'pa55word';
-    $dbname = 'shopDB';
+    $dbname = 'tech_support';
 
-    $db = new mysqli($dsn, $username, $password, $dbname);
+    $datab = new mysqli($servername, $username, $password, $dbname);
     
     if(mysqli_connect_error())
     {
