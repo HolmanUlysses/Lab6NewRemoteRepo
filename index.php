@@ -3,17 +3,18 @@
 
   
 //Set search term or hard-code the parameter value
- $state = 'CA';
+ 
 
- $query = "SELECT firstName, lastName, city FROM customers WHERE 
- state = ? order by lastName";
+ $query = "SELECT  customers.firstName, customers.lastName, registrations.productCode, products.name FROM `customers`
+INNER JOIN `registrations` ON registrations.customerID = customers.customerID 
+LEFT OUTER JOIN `products` ON products.productCode = registrations.productCode
+WHERE customers.customerID = 1004;";
  $stmt = $datab->prepare($query);
- $stmt->bind_param('s', $state);
  $stmt->execute();
 
  $stmt->store_result();
  //store result fields in variables
- $stmt->bind_result($firstName, $lastName, $city);
+ $stmt->bind_result($firstName, $lastName, $productCode,$name);
 ?>
 <!DOCTYPE html>
 <html>
@@ -45,13 +46,15 @@
                 <tr>
                     <th>First Name</th>
                     <th>last Name</th>
-                    <th>City</th></th>
+                    <th>productCode</th>
+                    <th>Name</th></th>
                 </tr>
                 <?php while ($stmt ->fetch()) { ?>
                 <tr>
                     <td><?php echo $firstName; ?></td>
                     <td><?php echo $lastName; ?></td>
-                    <td><?php echo $city; ?></td>
+                    <td><?php echo $productCode; ?></td>
+                    <td><?php echo $name; ?></td>
                 </tr>
                 <!-- result set is available -->
                 
